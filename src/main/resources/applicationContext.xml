@@ -8,11 +8,11 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util.xsd
                            http://www.springframework.org/schema/context
-                           http://www.springframework.org/shema/context/spring-context-5.0.xsd"
+                           http://www.springframework.org/schema/context/spring-context.xsd"
        default-lazy-init="false">
 
     <context:annotation-config/>
-    <context:component-scan base-package="java"/>
+    <context:component-scan base-package="dao, service"/>
 
     <util:properties id="jdbc" location="classpath:jdbc.properties"></util:properties>
 

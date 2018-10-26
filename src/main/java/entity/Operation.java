@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Operation {
 
-    private int oid;
+    private long oid;
 
     private String phoneNo;
 

@@ -9,9 +9,13 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Client {
+public class Pack {
 
-    private String phoneNo;
+    private long pid;
 
     private String name;
+
+    private double fee;
+
+    private List<Plan> plans;
 }
