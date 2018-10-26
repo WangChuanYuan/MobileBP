@@ -1,23 +1,24 @@
-package entity;
+package po;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import util.FeeType;
 
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class Operation {
 
     private long oid;
 
     private String phoneNo;
 
-    private long pid;
+    private LocalDateTime startTime;
 
-    private LocalDateTime time;
+    private LocalDateTime endTime;
 
-    private OrderStatus status;
+    private FeeType type;
 }

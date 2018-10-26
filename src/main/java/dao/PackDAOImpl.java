@@ -1,8 +1,8 @@
 package dao;
 
-import entity.FeeType;
-import entity.Pack;
-import entity.Plan;
+import util.FeeType;
+import po.Pack;
+import po.Plan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;

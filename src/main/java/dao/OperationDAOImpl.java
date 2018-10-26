@@ -1,7 +1,7 @@
 package dao;
 
-import entity.FeeType;
-import entity.Operation;
+import util.FeeType;
+import po.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

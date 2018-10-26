@@ -1,6 +1,6 @@
 package dao;
 
-import entity.Client;
+import po.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

@@ -1,6 +1,6 @@
 package dao;
 
-import entity.Pack;
+import po.Pack;
 
 public interface PackDAO {
 

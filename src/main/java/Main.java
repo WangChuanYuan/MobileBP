@@ -1,7 +1,7 @@
 import dao.OrderDAO;
 import dao.OrderDAOImpl;
-import entity.Order;
-import entity.OrderStatus;
+import po.Order;
+import util.OrderStatus;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

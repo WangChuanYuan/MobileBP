@@ -1,17 +1,16 @@
-package entity;
+package po;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
+import util.FeeType;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Client {
+public class Plan {
 
-    private String phoneNo;
+    private double freeLen;
 
-    private String name;
+    private FeeType type;
 }

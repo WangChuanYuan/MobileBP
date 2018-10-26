@@ -1,7 +1,7 @@
 package dao;
 
-import entity.FeeType;
-import entity.Operation;
+import util.FeeType;
+import po.Operation;
 
 import java.time.LocalDateTime;
 import java.util.List;

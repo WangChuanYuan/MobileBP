@@ -1,7 +1,7 @@
 package dao;
 
-import entity.Order;
-import entity.OrderStatus;
+import po.Order;
+import util.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

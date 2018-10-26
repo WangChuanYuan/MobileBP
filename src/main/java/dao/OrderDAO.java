@@ -1,6 +1,6 @@
 package dao;
 
-import entity.Order;
+import po.Order;
 
 import java.time.LocalDateTime;
 import java.util.List;

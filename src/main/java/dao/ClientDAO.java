@@ -1,6 +1,6 @@
 package dao;
 
-import entity.Client;
+import po.Client;
 
 public interface ClientDAO {
 
