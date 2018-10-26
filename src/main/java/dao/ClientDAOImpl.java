@@ -28,21 +28,21 @@ public class ClientDAOImpl implements ClientDAO {
 
     @Override
     public int save(Client client) {
-        String sql = "insert into Client(phoneNo, name) value(?, ?)";
+        String sql = "insert into `Client`(phoneNo, name) value(?, ?)";
         int row = jdbcTemplate.update(sql, new Object[]{client.getPhoneNo(), client.getName()});
         return row;
     }
 
     @Override
     public int update(Client client) {
-        String sql = "update Client set name=? where phoneNo=?";
+        String sql = "update `Client` set name=? where phoneNo=?";
         int row = jdbcTemplate.update(sql, new Object[]{client.getName(), client.getPhoneNo()});
         return row;
     }
 
     @Override
     public Client findByPN(String phoneNo) {
-        String sql = "select * from Client where phoneNo=?";
+        String sql = "select * from `Client` where phoneNo=?";
         List<Client> clients = jdbcTemplate.query(sql, new Object[]{phoneNo}, new ClientRowMapper());
         return clients.size() == 0 ? null : clients.get(0);
     }

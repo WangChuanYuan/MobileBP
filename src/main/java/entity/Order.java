@@ -11,9 +11,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Order {
 
+    private long oid;
+
     private String phoneNo;
 
-    private int pid;
+    private long pid;
 
     private LocalDateTime time;
 
