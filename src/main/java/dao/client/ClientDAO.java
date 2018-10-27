@@ -1,4 +1,4 @@
-package dao;
+package dao.client;
 
 import po.Client;
 

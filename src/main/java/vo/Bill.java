@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Bill {
 
+    private double packFee;
+
     private double feeOfCall;
 
     private double feeOfMsg;

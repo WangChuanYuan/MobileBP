@@ -20,5 +20,18 @@ public class Operation {
 
     private LocalDateTime endTime;
 
+    private double useLen;
+
+    private double fee;
+
     private FeeType type;
+
+    public Operation(String phoneNo, LocalDateTime startTime, LocalDateTime endTime, double useLen, double fee, FeeType type) {
+        this.phoneNo = phoneNo;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.useLen = useLen;
+        this.fee = fee;
+        this.type = type;
+    }
 }

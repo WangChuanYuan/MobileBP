@@ -1,7 +1,7 @@
-package dao;
+package dao.operation;
 
-import util.FeeType;
 import po.Operation;
+import util.FeeType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,7 +14,7 @@ public interface OperationDAO {
 
     List<Operation> findByPN(String phoneNo);
 
-    List<Operation> findByType(FeeType type);
-
     List<Operation> findByPNAndTimeBetween(String phoneNo, LocalDateTime startTime, LocalDateTime endTime);
+
+    List<Operation> findByPNAndTimeBetweenAndType(String phoneNo, LocalDateTime startTime, LocalDateTime endTime, FeeType type);
 }

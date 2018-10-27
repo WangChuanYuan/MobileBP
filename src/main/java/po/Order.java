@@ -21,4 +21,11 @@ public class Order {
     private LocalDateTime time;
 
     private OrderStatus status;
+
+    public Order(String phoneNo, long pid, LocalDateTime time, OrderStatus status) {
+        this.phoneNo = phoneNo;
+        this.pid = pid;
+        this.time = time;
+        this.status = status;
+    }
 }

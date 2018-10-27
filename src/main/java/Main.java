@@ -1,19 +1,32 @@
-import dao.OrderDAO;
-import dao.OrderDAOImpl;
-import po.Order;
-import util.OrderStatus;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.time.LocalDateTime;
+import service.operation.BillService;
+import service.operation.CallService;
+import service.operation.DataService;
+import service.operation.MsgService;
+import service.order.OrderService;
+import service.pack.PackService;
 
 public class Main {
 
+    private BillService billService;
+
+    private CallService callService;
+
+    private MsgService msgService;
+
+    private DataService dataService;
+
+    private OrderService orderService;
+
+    private PackService packService;
+
+    public static void initialize() {
+
+    }
+
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        OrderDAO orderDAO = context.getBean(OrderDAOImpl.class);
-        Order order = new Order(1, "123", 1, LocalDateTime.now(), OrderStatus.ORDER);
-        orderDAO.save(order);
     }
 
 }

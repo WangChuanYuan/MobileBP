@@ -1,8 +1,8 @@
-package dao;
+package dao.order;
 
 import po.Order;
+import util.OrderStatus;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderDAO {
@@ -13,5 +13,5 @@ public interface OrderDAO {
 
     List<Order> findByPN(String phoneNo);
 
-    List<Order> findByPNAndTimeBetween(String phoneNo, LocalDateTime startTime, LocalDateTime endTime);
+    List<Order> findByPNAndStatusIn(String phoneNo, List<OrderStatus> statuses);
 }

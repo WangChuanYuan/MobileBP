@@ -1,4 +1,4 @@
-package service;
+package service.pack;
 
 import po.Pack;
 import util.ResultMsg;

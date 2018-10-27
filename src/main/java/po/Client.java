@@ -12,4 +12,6 @@ public class Client {
     private String phoneNo;
 
     private String name;
+
+    private double remain;
 }

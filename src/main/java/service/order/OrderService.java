@@ -1,4 +1,4 @@
-package service;
+package service.order;
 
 import po.Pack;
 import util.OrderStatus;

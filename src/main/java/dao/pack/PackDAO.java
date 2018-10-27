@@ -1,4 +1,4 @@
-package dao;
+package dao.pack;
 
 import po.Pack;
 

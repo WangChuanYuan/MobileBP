@@ -1,8 +1,5 @@
-package dao;
+package dao.pack;
 
-import util.FeeType;
-import po.Pack;
-import po.Plan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,6 +7,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import po.Pack;
+import po.Plan;
+import util.FeeType;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-@Repository
+@Repository(value = "packDAO")
 public class PackDAOImpl implements PackDAO {
 
     @Autowired
@@ -45,13 +45,13 @@ public class PackDAOImpl implements PackDAO {
         }
     }
 
-    private int deletePlans(long pid){
-        String sql = "delete from Plan where pack_id=?";
+    private int deletePlans(long pid) {
+        String sql = "DELETE FROM Plan WHERE pack_id=?";
         return jdbcTemplate.update(sql, pid);
     }
 
-    private int[] savePlans(List<Plan> plans, long pid){
-        String sql = "insert into Plan(freeLan, type, pack_id) values(?, ?, ?)";
+    private int[] savePlans(List<Plan> plans, long pid) {
+        String sql = "INSERT INTO Plan(freeLan, type, pack_id) VALUES(?, ?, ?)";
         return jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -68,15 +68,15 @@ public class PackDAOImpl implements PackDAO {
         });
     }
 
-    private List<Plan> findPlansByPid(long pid){
-        String sql = "select freeLen, type from Plan where pack_id=?";
+    private List<Plan> findPlansByPid(long pid) {
+        String sql = "SELECT freeLen, type FROM Plan WHERE pack_id=?";
         List<Plan> plans = jdbcTemplate.query(sql, new Object[]{pid}, new PlanRowMapper());
         return plans;
     }
 
     @Override
     public int save(Pack pack) {
-        String packSQL = "insert into Pack(name, fee) value(?, ?)";
+        String packSQL = "INSERT INTO Pack(name, fee) VALUE(?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int row = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(packSQL, Statement.RETURN_GENERATED_KEYS);
@@ -84,7 +84,7 @@ public class PackDAOImpl implements PackDAO {
             ps.setDouble(2, pack.getFee());
             return ps;
         }, keyHolder);
-        if(row <= 0 )
+        if (row <= 0)
             return -1;
         else {
             long pid = keyHolder.getKey().longValue();
@@ -96,9 +96,9 @@ public class PackDAOImpl implements PackDAO {
     @Override
     public int update(Pack pack) {
         long pid = pack.getPid();
-        String packSQL = "update Pack set name=?, fee=? where pid=?";
+        String packSQL = "UPDATE Pack SET name=?, fee=? WHERE pid=?";
         int row = jdbcTemplate.update(packSQL, new Object[]{pack.getName(), pack.getFee(), pid});
-        if(row <= 0)
+        if (row <= 0)
             return -1;
         else {
             deletePlans(pid);
@@ -110,9 +110,9 @@ public class PackDAOImpl implements PackDAO {
     @Override
     public Pack findByPid(long pid) {
         Pack pack = null;
-        String sql = "select * from Pack where pid=?";
+        String sql = "SELECT * FROM Pack WHERE pid=?";
         List<Pack> packs = jdbcTemplate.query(sql, new Object[]{pid}, new PackRowMapper());
-        if(packs.size() != 0){
+        if (packs.size() != 0) {
             pack = packs.get(0);
             pack.setPlans(findPlansByPid(pid));
         }
