@@ -37,7 +37,7 @@ public class OperationDAOImpl implements OperationDAO {
 
     @Override
     public int save(Operation operation) {
-        String sql = "INSERT INTO Operation(phoneNo, startTime, endTime, useLen, fee, type) VALUE(?, ?, ?, ?)";
+        String sql = "INSERT INTO Operation(phoneNo, startTime, endTime, useLen, fee, type) VALUE(?, ?, ?, ?, ?, ?)";
         int row = jdbcTemplate.update(sql, new Object[]{operation.getPhoneNo(), operation.getStartTime(), operation.getEndTime(), operation.getUseLen(), operation.getFee(), operation.getType().toString()});
         return row;
     }

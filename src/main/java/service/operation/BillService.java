@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BillService {
 
-    Bill getBillOf(String phoneNo);
+    Bill getBillOf(String phoneNo, int year, int month);
 
-    List<Operation> getDetailsOf(String phoneNo, FeeType type);
+    List<Operation> getDetailsOf(String phoneNo, int year, int month, FeeType type);
 }

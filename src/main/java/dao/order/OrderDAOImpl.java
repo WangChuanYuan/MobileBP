@@ -26,7 +26,6 @@ public class OrderDAOImpl implements OrderDAO {
     private NamedParameterJdbcTemplate parameterJdbcTemplate;
 
     private class OrderRowMapper implements RowMapper<Order> {
-
         @Override
         public Order mapRow(ResultSet resultSet, int i) throws SQLException {
             Order order = new Order();
@@ -69,14 +68,14 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public List<Order> findByPN(String phoneNo) {
-        String sql = "SELECT * FROM `Order` WHERE phoneNo=?";
+        String sql = "SELECT * FROM `Order` WHERE phoneNo=? ORDER BY time DESC ";
         List<Order> orders = jdbcTemplate.query(sql, new Object[]{phoneNo}, new OrderRowMapper());
         return orders;
     }
 
     @Override
     public List<Order> findByPNAndStatusIn(String phoneNo, List<OrderStatus> statuses) {
-        String sql = "SELECT * FROM `Order` WHERE phoneNo=:phoneNo AND status IN (:statuses)";
+        String sql = "SELECT * FROM `Order` WHERE phoneNo=:phoneNo AND status IN (:statuses) ORDER BY time DESC ";
         List<String> statusStr = new ArrayList<>();
         statuses.forEach(orderStatus -> statusStr.add(orderStatus.toString()));
         Map<String, Object> params = new HashMap<>();

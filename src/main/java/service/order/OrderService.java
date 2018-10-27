@@ -1,8 +1,8 @@
 package service.order;
 
-import po.Pack;
 import util.OrderStatus;
 import util.ResultMsg;
+import vo.PackDetail;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public interface OrderService {
 
     ResultMsg cancelPack(String phoneNo, long pid, OrderStatus status);
 
-    List<Pack> getOrderedPacks(String phoneNo);
+    List<PackDetail> getOrderedPacks(String phoneNo);
 
-    List<Pack> getPackHistory(String phoneNo);
+    List<PackDetail> getPackHistory(String phoneNo);
 }
