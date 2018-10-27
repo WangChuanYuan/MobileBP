@@ -15,6 +15,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ResultMsg addClient(Client client) {
+        //该用户已经存在
+        if (clientDAO.exists(client.getPhoneNo()))
+            return ResultMsg.FAILURE;
         return clientDAO.save(client) > 0 ? ResultMsg.SUCCESS : ResultMsg.FAILURE;
     }
 }

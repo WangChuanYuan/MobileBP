@@ -8,5 +8,7 @@ public interface ClientDAO {
 
     int update(Client client);
 
+    boolean exists(String phoneNo);
+
     Client findByPN(String phoneNo);
 }

@@ -11,6 +11,10 @@ public interface OrderDAO {
 
     int update(Order order);
 
+    boolean exists(String phoneNo, long pid);
+
+    Order findByPNAndPid(String phoneNo, long pid);
+
     List<Order> findByPN(String phoneNo);
 
     List<Order> findByPNAndStatusIn(String phoneNo, List<OrderStatus> statuses);

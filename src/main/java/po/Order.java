@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Order {
 
-    private long oid;
-
     private String phoneNo;
 
     private long pid;
@@ -22,10 +20,4 @@ public class Order {
 
     private OrderStatus status;
 
-    public Order(String phoneNo, long pid, LocalDateTime time, OrderStatus status) {
-        this.phoneNo = phoneNo;
-        this.pid = pid;
-        this.time = time;
-        this.status = status;
-    }
 }

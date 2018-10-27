@@ -7,7 +7,7 @@ import util.ResultMsg;
 
 import javax.annotation.Resource;
 
-@Service
+@Service(value = "packService")
 public class PackServiceImpl implements PackService {
 
     @Resource

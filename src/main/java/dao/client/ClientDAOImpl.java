@@ -41,6 +41,11 @@ public class ClientDAOImpl implements ClientDAO {
     }
 
     @Override
+    public boolean exists(String phoneNo) {
+        return findByPN(phoneNo) != null ? true : false;
+    }
+
+    @Override
     public Client findByPN(String phoneNo) {
         String sql = "SELECT * FROM `Client` WHERE phoneNo=?";
         List<Client> clients = jdbcTemplate.query(sql, new Object[]{phoneNo}, new ClientRowMapper());

@@ -2,6 +2,7 @@ package service.operation;
 
 import dao.client.ClientDAO;
 import dao.operation.OperationDAO;
+import org.springframework.stereotype.Service;
 import po.Client;
 import po.Operation;
 import po.Pack;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import static util.BaseFee.FEE;
 
+@Service(value = "dataService")
 public class DataServiceImpl implements DataService {
 
     @Resource

@@ -31,7 +31,6 @@ public class OrderDAOImpl implements OrderDAO {
         @Override
         public Order mapRow(ResultSet resultSet, int i) throws SQLException {
             Order order = new Order();
-            order.setOid(resultSet.getLong("oid"));
             order.setPhoneNo(resultSet.getString("phoneNo"));
             order.setStatus(OrderStatus.valueOf(resultSet.getString("status")));
             order.setPid(resultSet.getLong("pid"));
@@ -49,9 +48,24 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public int update(Order order) {
-        String sql = "UPDATE `Order` SET phoneNo=?, pid=?, time=?, status=? WHERE oid=?";
-        int row = jdbcTemplate.update(sql, new Object[]{order.getPhoneNo(), order.getPid(), order.getTime(), order.getStatus().toString(), order.getOid()});
+        String sql = "UPDATE `Order` SET time=?, status=? WHERE phoneNo=? and pid=?";
+        int row = jdbcTemplate.update(sql, new Object[]{order.getTime(), order.getStatus().toString(), order.getPhoneNo(), order.getPid()});
         return row;
+    }
+
+    @Override
+    public boolean exists(String phoneNo, long pid) {
+        Order order = findByPNAndPid(phoneNo, pid);
+        if(order == null)
+            return false;
+        else return order.getStatus() == OrderStatus.CANCEL ? false : true;
+    }
+
+    @Override
+    public Order findByPNAndPid(String phoneNo, long pid) {
+        String sql = "SELECT * FROM `Order` WHERE phoneNo=? AND pid=?";
+        List<Order> orders = jdbcTemplate.query(sql, new Object[]{phoneNo, pid}, new OrderRowMapper());
+        return orders.size() == 0 ? null : orders.get(0);
     }
 
     @Override
