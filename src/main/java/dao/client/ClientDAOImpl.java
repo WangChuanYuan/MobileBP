@@ -22,21 +22,22 @@ public class ClientDAOImpl implements ClientDAO {
             Client client = new Client();
             client.setPhoneNo(resultSet.getString("phoneNo"));
             client.setName(resultSet.getString("name"));
+            client.setRemain(resultSet.getDouble("remain"));
             return client;
         }
     }
 
     @Override
     public int save(Client client) {
-        String sql = "INSERT INTO `Client`(phoneNo, name) VALUE(?, ?)";
-        int row = jdbcTemplate.update(sql, new Object[]{client.getPhoneNo(), client.getName()});
+        String sql = "INSERT INTO `Client`(phoneNo, name, remain) VALUE(?, ?, ?)";
+        int row = jdbcTemplate.update(sql, new Object[]{client.getPhoneNo(), client.getName(), client.getRemain()});
         return row;
     }
 
     @Override
     public int update(Client client) {
-        String sql = "UPDATE `Client` SET name=? WHERE phoneNo=?";
-        int row = jdbcTemplate.update(sql, new Object[]{client.getName(), client.getPhoneNo()});
+        String sql = "UPDATE `Client` SET name=?, remain=? WHERE phoneNo=?";
+        int row = jdbcTemplate.update(sql, new Object[]{client.getName(), client.getRemain(), client.getPhoneNo()});
         return row;
     }
 

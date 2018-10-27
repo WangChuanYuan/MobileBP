@@ -20,4 +20,9 @@ public class ClientServiceImpl implements ClientService {
             return ResultMsg.FAILURE;
         return clientDAO.save(client) > 0 ? ResultMsg.SUCCESS : ResultMsg.FAILURE;
     }
+
+    @Override
+    public Client getClientByPN(String phoneNo) {
+        return clientDAO.findByPN(phoneNo);
+    }
 }

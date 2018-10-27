@@ -10,8 +10,7 @@ import util.OrderStatus;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +33,7 @@ public class OrderDAOImpl implements OrderDAO {
             order.setPhoneNo(resultSet.getString("phoneNo"));
             order.setStatus(OrderStatus.valueOf(resultSet.getString("status")));
             order.setPid(resultSet.getLong("pid"));
-            order.setTime(LocalDateTime.ofInstant(resultSet.getTime("time").toInstant(), ZoneId.systemDefault()));
+            order.setTime(((Timestamp)resultSet.getObject("time")).toLocalDateTime());
             return order;
         }
     }
@@ -77,7 +76,7 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public List<Order> findByPNAndStatusIn(String phoneNo, List<OrderStatus> statuses) {
-        String sql = "SELECT * FROM `Order` WHERE phoneNo=:phoneNo AND status IN :statuses";
+        String sql = "SELECT * FROM `Order` WHERE phoneNo=:phoneNo AND status IN (:statuses)";
         List<String> statusStr = new ArrayList<>();
         statuses.forEach(orderStatus -> statusStr.add(orderStatus.toString()));
         Map<String, Object> params = new HashMap<>();

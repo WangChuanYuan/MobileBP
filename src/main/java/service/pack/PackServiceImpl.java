@@ -17,4 +17,9 @@ public class PackServiceImpl implements PackService {
     public ResultMsg addPack(Pack pack) {
         return packDAO.save(pack) > 0 ? ResultMsg.SUCCESS : ResultMsg.FAILURE;
     }
+
+    @Override
+    public Pack getPackByPid(long pid) {
+        return packDAO.findByPid(pid);
+    }
 }

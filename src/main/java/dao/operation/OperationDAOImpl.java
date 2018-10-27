@@ -9,8 +9,8 @@ import util.FeeType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 
 @Repository(value = "operationDAO")
@@ -26,8 +26,10 @@ public class OperationDAOImpl implements OperationDAO {
             Operation operation = new Operation();
             operation.setOid(resultSet.getLong("oid"));
             operation.setPhoneNo(resultSet.getString("phoneNo"));
-            operation.setStartTime(LocalDateTime.ofInstant(resultSet.getTime("startTime").toInstant(), ZoneId.systemDefault()));
-            operation.setEndTime(LocalDateTime.ofInstant(resultSet.getTime("endTime").toInstant(), ZoneId.systemDefault()));
+            operation.setStartTime(((Timestamp)resultSet.getObject("startTime")).toLocalDateTime());
+            operation.setEndTime(((Timestamp)resultSet.getObject("endTime")).toLocalDateTime());
+            operation.setUseLen(resultSet.getDouble("useLen"));
+            operation.setFee(resultSet.getDouble("fee"));
             operation.setType(FeeType.valueOf(resultSet.getString("type")));
             return operation;
         }
@@ -35,15 +37,15 @@ public class OperationDAOImpl implements OperationDAO {
 
     @Override
     public int save(Operation operation) {
-        String sql = "INSERT INTO Operation(phoneNo, startTime, endTime, type) VALUE(?, ?, ?, ?)";
-        int row = jdbcTemplate.update(sql, new Object[]{operation.getPhoneNo(), operation.getStartTime(), operation.getEndTime(), operation.getType().toString()});
+        String sql = "INSERT INTO Operation(phoneNo, startTime, endTime, useLen, fee, type) VALUE(?, ?, ?, ?)";
+        int row = jdbcTemplate.update(sql, new Object[]{operation.getPhoneNo(), operation.getStartTime(), operation.getEndTime(), operation.getUseLen(), operation.getFee(), operation.getType().toString()});
         return row;
     }
 
     @Override
     public int update(Operation operation) {
-        String sql = "UPDATE Operation SET phoneNo=?, startTime=?, endTime=?, type=? WHERE oid=?";
-        int row = jdbcTemplate.update(sql, new Object[]{operation.getPhoneNo(), operation.getStartTime(), operation.getEndTime(), operation.getType().toString(), operation.getOid()});
+        String sql = "UPDATE Operation SET phoneNo=?, startTime=?, endTime=?, useLen=?, fee=?, type=? WHERE oid=?";
+        int row = jdbcTemplate.update(sql, new Object[]{operation.getPhoneNo(), operation.getStartTime(), operation.getEndTime(), operation.getUseLen(), operation.getFee(), operation.getType().toString(), operation.getOid()});
         return row;
     }
 

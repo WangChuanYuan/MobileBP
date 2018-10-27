@@ -51,7 +51,7 @@ public class PackDAOImpl implements PackDAO {
     }
 
     private int[] savePlans(List<Plan> plans, long pid) {
-        String sql = "INSERT INTO Plan(freeLan, type, pack_id) VALUES(?, ?, ?)";
+        String sql = "INSERT INTO Plan(freeLen, type, pack_id) VALUES(?, ?, ?)";
         return jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {

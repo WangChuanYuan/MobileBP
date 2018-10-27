@@ -7,4 +7,5 @@ public interface PackService {
 
     ResultMsg addPack(Pack pack);
 
+    Pack getPackByPid(long pid);
 }
