@@ -38,11 +38,11 @@ public class BillServiceImpl implements BillService {
         double callLen = 0;
         double msgLen = 0;
         double localDataLen = 0;
-        double genDataLen  =0;
+        double genDataLen = 0;
         double callFee = 0;
         double msgFee = 0;
         double localDataFee = 0;
-        double genDataFee  =0;
+        double genDataFee = 0;
         if (consumption.get(FeeType.CALL) != null) {
             callFee = consumption.get(FeeType.CALL).getSum();
             callLen = useLen.get(FeeType.CALL).getSum();
