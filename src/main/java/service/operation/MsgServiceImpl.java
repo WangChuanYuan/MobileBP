@@ -24,6 +24,8 @@ public class MsgServiceImpl implements MsgService {
 
     @Override
     public double sendMsg(String phoneNo, LocalDateTime time) {
+        if(!clientDAO.exists(phoneNo))
+            return -1;
         double useLen = 1;
         double consume = feeCalculator.calculateFee(phoneNo, useLen, time, FeeType.MESSAGE);
         //记录本条短信

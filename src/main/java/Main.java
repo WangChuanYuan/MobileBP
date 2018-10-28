@@ -34,22 +34,23 @@ public class Main {
 
 
     /**
-     *
-     *
+     * 可以进行的操作
+     * 具体说明见方法注释或说明文档
      */
     public static void main(String[] args) {
         initialize();
 //        addClient();
 //        addPack();
-//        order();
-        call();
-        sendMessage();
-        useLocalData();
-        useGenData();
-//        getOrderedPacks();
+//        call();
+//        sendMessage();
+//        useLocalData();
+//        useGenData();
 //        genBill();
 //        genDetails();
+//        getOrderedPacks();
+//        order();
 //        cancelOrder();
+//        preCancelOrder();
 //        getPackHistory();
     }
 
@@ -73,11 +74,10 @@ public class Main {
         System.out.println("添加新的客户");
         Client client = new Client("123456789", "wcy", 10000);
         ResultMsg resultMsg = clientService.addClient(client);
-        if(resultMsg == ResultMsg.SUCCESS) {
+        if (resultMsg == ResultMsg.SUCCESS) {
             System.out.println("添加成功");
             client.describe();
-        }
-        else System.out.println("添加失败，该客户已存在");
+        } else System.out.println("添加失败，该客户已存在");
         System.out.println("---------------");
         long end = System.currentTimeMillis();
         System.out.println((end - start) / 1000.0 + "seconds");
@@ -99,11 +99,10 @@ public class Main {
         plans.add(new Plan(100, FeeType.GEN_DATA));
         Pack pack = new Pack("基础套餐", 20, plans);
         ResultMsg resultMsg = packService.addPack(pack);
-        if(resultMsg == ResultMsg.SUCCESS) {
+        if (resultMsg == ResultMsg.SUCCESS) {
             System.out.println("添加成功");
             pack.describe();
-        }
-        else System.out.println("添加失败");
+        } else System.out.println("添加失败");
         System.out.println("---------------");
         long end = System.currentTimeMillis();
         System.out.println((end - start) / 1000.0 + "seconds");
@@ -114,7 +113,7 @@ public class Main {
     /**
      * 为123456789订购1号套餐，注意同一套餐相同用户只能同时订购一个
      */
-    private static void order(){
+    private static void order() {
         long start = System.currentTimeMillis();
         String phoneNo = "123456789";
         long pid = 1;
@@ -122,14 +121,13 @@ public class Main {
         System.out.println("手机号：" + phoneNo);
         System.out.println("套餐ID：" + pid);
         ResultMsg resultMsg = orderService.orderPack(phoneNo, pid);
-        if(resultMsg == ResultMsg.SUCCESS) {
+        if (resultMsg == ResultMsg.SUCCESS) {
             System.out.println("订购成功");
             Client client = clientService.getClientByPN(phoneNo);
             Pack pack = packService.getPackByPid(pid);
             System.out.println("扣除月功能费" + pack.getFee() + "元");
             System.out.println("余额" + client.getRemain() + "元");
-        }
-        else System.out.println("订购失败，不可重复订购");
+        } else System.out.println("订购失败，不可重复订购");
         System.out.println("---------------");
         long end = System.currentTimeMillis();
         System.out.println((end - start) / 1000.0 + "seconds");
@@ -138,20 +136,20 @@ public class Main {
     }
 
     /**
-     * 为123456789立即退订1号套餐，则会重新计费本月的消费，退还套餐费，并要求补交多余的费用
+     * 为123456789立即退订2号套餐，则会重新计费本月的消费，退还套餐费，并要求补交多余的费用
      * 注意如果用户拥有其他套餐，并且本月消费仍在套餐免费额度内，可能只需退还套餐费，不用补交费用
      */
-    private static void cancelOrder(){
+    private static void cancelOrder() {
         long start = System.currentTimeMillis();
         String phoneNo = "123456789";
-        long pid = 1;
+        long pid = 2;
         System.out.println("退订套餐且立即生效");
         System.out.println("手机号：" + phoneNo);
         System.out.println("套餐ID：" + pid);
         double remainBeforeCancel = clientService.getClientByPN(phoneNo).getRemain();
         System.out.println("退订前余额：" + remainBeforeCancel + "元");
         ResultMsg resultMsg = orderService.cancelPack(phoneNo, pid, OrderStatus.CANCEL);
-        if(resultMsg == ResultMsg.SUCCESS) {
+        if (resultMsg == ResultMsg.SUCCESS) {
             System.out.println("退订成功，即刻生效，已重新计算本月消费，并退还/收取费用");
             double remainAfterCancel = clientService.getClientByPN(phoneNo).getRemain();
             System.out.println("退订后余额" + remainAfterCancel + "元");
@@ -166,7 +164,7 @@ public class Main {
     /**
      * 为123456789次月退订1号套餐
      */
-    private static void preCancelOrder(){
+    private static void preCancelOrder() {
         long start = System.currentTimeMillis();
         String phoneNo = "123456789";
         long pid = 1;
@@ -174,7 +172,7 @@ public class Main {
         System.out.println("手机号：" + phoneNo);
         System.out.println("套餐ID：" + pid);
         ResultMsg resultMsg = orderService.cancelPack(phoneNo, pid, OrderStatus.CANCEL);
-        if(resultMsg == ResultMsg.SUCCESS) {
+        if (resultMsg == ResultMsg.SUCCESS) {
             System.out.println("退订成功，下月生效");
         } else System.out.println("退订失败");
         System.out.println("---------------");
@@ -187,7 +185,7 @@ public class Main {
     /**
      * 得到123456789目前订购的套餐（包括订购的和次月取消的）
      */
-    private static void getOrderedPacks(){
+    private static void getOrderedPacks() {
         long start = System.currentTimeMillis();
         String phoneNo = "123456789";
         System.out.println("查询已购套餐");
@@ -205,7 +203,7 @@ public class Main {
     /**
      * 得到123456789套餐历史（包括已经取消的套餐）
      */
-    private static void getPackHistory(){
+    private static void getPackHistory() {
         long start = System.currentTimeMillis();
         String phoneNo = "123456789";
         System.out.println("查询套餐历史");
@@ -223,7 +221,7 @@ public class Main {
     /**
      * 123456789通话，记录下此次通话费用，如果在免费额度内，则费用为0
      */
-    private static void call(){
+    private static void call() {
         long start = System.currentTimeMillis();
         String phoneNo = "123456789";
         LocalDateTime startTime = LocalDateTime.now();
@@ -244,7 +242,7 @@ public class Main {
     /**
      * 123456789发送短信，记录下此次短信费用，如果在免费额度内，则费用为0
      */
-    private static void sendMessage(){
+    private static void sendMessage() {
         long start = System.currentTimeMillis();
         String phoneNo = "123456789";
         LocalDateTime startTime = LocalDateTime.now();
@@ -262,7 +260,7 @@ public class Main {
     /**
      * 123456789使用本地流量，记录下此次流量费用，如果在免费额度内，则费用为0
      */
-    private static void useLocalData(){
+    private static void useLocalData() {
         long start = System.currentTimeMillis();
         String phoneNo = "123456789";
         LocalDateTime startTime = LocalDateTime.now();
@@ -283,7 +281,7 @@ public class Main {
     /**
      * 123456789使用全国流量，记录下此次流量费用，如果在免费额度内，则费用为0
      */
-    private static void useGenData(){
+    private static void useGenData() {
         long start = System.currentTimeMillis();
         String phoneNo = "123456789";
         LocalDateTime startTime = LocalDateTime.now();
@@ -304,12 +302,12 @@ public class Main {
     /**
      * 生成123456789的2018年10月的账单，包括功能费，通话时间，短信条数，本地流量用量，全国流量用量，通话费，短信费，本地流量费，全国流量费
      */
-    private static void genBill(){
+    private static void genBill() {
         long start = System.currentTimeMillis();
         String phoneNo = "123456789";
         int year = 2018;
         int month = 10;
-        System.out.println("生成" + year + "年"+ month + "月账单");
+        System.out.println("生成" + year + "年" + month + "月账单");
         System.out.println("手机号：" + phoneNo);
         Bill bill = billService.getBillOf(phoneNo, 2018, 10);
         bill.describe();
@@ -323,12 +321,12 @@ public class Main {
     /**
      * 生成123456789的2018年10月的账单明细，详细给出每一笔通话费，短信费，本地流量费，全国流量费的使用情况
      */
-    private static void genDetails(){
+    private static void genDetails() {
         long start = System.currentTimeMillis();
         String phoneNo = "123456789";
         int year = 2018;
         int month = 10;
-        System.out.println("生成" + year + "年"+ month + "月使用详情");
+        System.out.println("生成" + year + "年" + month + "月使用详情");
         System.out.println("手机号：" + phoneNo);
         System.out.println("通话使用详情：");
         List<Operation> callOperations = billService.getDetailsOf(phoneNo, 2018, 10, FeeType.CALL);

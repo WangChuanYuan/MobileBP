@@ -38,6 +38,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ResultMsg orderPack(String phoneNo, long pid) {
+        if(!clientDAO.exists(phoneNo))
+            return ResultMsg.FAILURE;
         //已享受该套餐，不可订购
         if(orderDAO.exists(phoneNo, pid))
             return ResultMsg.FAILURE;
@@ -54,8 +56,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ResultMsg cancelPack(String phoneNo, long pid, OrderStatus status) {
+        if(!clientDAO.exists(phoneNo))
+            return ResultMsg.FAILURE;
         //更改订单状态
         Order order = orderDAO.findByPNAndPid(phoneNo, pid);
+        if(order == null)
+            return ResultMsg.FAILURE;
         order.setStatus(status);
         int row = orderDAO.update(order);
         if (row > 0) {

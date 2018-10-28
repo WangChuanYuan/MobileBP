@@ -37,7 +37,7 @@ public class FeeCalculator {
                     freeLen = freeLen + plan.getFreeLen();
             }
         }
-        //用户本月已使用长度
+        //用户从月初目前为止已使用长度
         double useLenOfMonth = 0;
         List<Operation> operations = operationDAO.findByPNAndTimeBetween(phoneNo, monthStart, monthEnd);
         for (int i = 0; i < operations.size(); i++) {
@@ -54,7 +54,7 @@ public class FeeCalculator {
             actualLen = actualLen + diff;
         //如果加上本次超出免费长度
         if (actualLen > 0)
-            consume = FEE[FeeType.CALL.ordinal()] * actualLen;
+            consume = FEE[type.ordinal()] * actualLen;
         return consume;
     }
 }
