@@ -2,7 +2,6 @@ package service.operation;
 
 import dao.operation.OperationDAO;
 import org.springframework.stereotype.Component;
-import po.Operation;
 import po.Plan;
 import service.order.OrderService;
 import util.FeeType;
@@ -23,12 +22,11 @@ public class FeeCalculator {
     @Resource
     private OperationDAO operationDAO;
 
-    public double calculateFee(String phoneNo, double useLen, LocalDateTime time, FeeType type) {
-        LocalDateTime monthStart = LocalDateTime.of(time.getYear(), time.getMonthValue(), 1, 0, 0);
-        LocalDateTime monthEnd = LocalDateTime.of(time.getYear(), time.getMonthValue(), time.toLocalDate().lengthOfMonth(), 23, 59);
+    public double calculateFee(String phoneNo, double useLen, LocalDateTime endTime, FeeType type) {
+        LocalDateTime monthStart = LocalDateTime.of(endTime.getYear(), endTime.getMonthValue(), 1, 0, 0);
         //用户当前套餐可支持的免费长度
         double freeLen = 0;
-        List<PackDetail> packs = orderService.getOrderedPacks(phoneNo);
+        List<PackDetail> packs = orderService.getOrderedPacksBefore(phoneNo, endTime);
         for (int i = 0; i < packs.size(); i++) {
             List<Plan> plans = packs.get(i).getPack().getPlans();
             for (int j = 0; j < plans.size(); j++) {
@@ -37,24 +35,17 @@ public class FeeCalculator {
                     freeLen = freeLen + plan.getFreeLen();
             }
         }
-        //用户从月初目前为止已使用长度
-        double useLenOfMonth = 0;
-        List<Operation> operations = operationDAO.findByPNAndTimeBetween(phoneNo, monthStart, monthEnd);
-        for (int i = 0; i < operations.size(); i++) {
-            Operation operation = operations.get(i);
-            if (operation.getType() == type)
-                useLenOfMonth = useLenOfMonth + operation.getUseLen();
-        }
-        //计算本次费用
-        double diff = useLenOfMonth - freeLen;
-        double actualLen = useLen;
-        double consume = 0;
-        //如果本月使用长度未超过免费长度
-        if (diff <= 0)
-            actualLen = actualLen + diff;
-        //如果加上本次超出免费长度
+        //用户从月初到目前为止已使用长度
+        double useLenOfMonth = operationDAO.findSumOfUseLenByPNAndTimeBetweenAndType(phoneNo, monthStart, endTime, type);
+        //用户从月初到目前为止总费用
+        double feeOfMonth = operationDAO.findSumOfFeeByPNAndTimeBetweenAndType(phoneNo, monthStart, endTime, type);
+        //计算加上本次操作的总费用
+        double fee = 0;
+        double actualLen = (useLen + useLenOfMonth) - freeLen;
         if (actualLen > 0)
-            consume = FEE[type.ordinal()] * actualLen;
+            fee = actualLen * FEE[type.ordinal()];
+        //计算本次操作费用
+        double consume = (fee - feeOfMonth) > 0 ? (fee - feeOfMonth) : 0;
         return consume;
     }
 }

@@ -25,11 +25,11 @@ public class CallServiceImpl implements CallService {
 
     @Override
     public double call(String phoneNo, LocalDateTime startTime, LocalDateTime endTime) {
-        if(!clientDAO.exists(phoneNo))
+        if (!clientDAO.exists(phoneNo))
             return -1;
         //本次通话时间
         double useLen = Duration.between(startTime, endTime).toMinutes();
-        double consume = feeCalculator.calculateFee(phoneNo, useLen, startTime, FeeType.CALL);
+        double consume = feeCalculator.calculateFee(phoneNo, useLen, endTime, FeeType.CALL);
         //记录本次通话
         Operation operation = new Operation(phoneNo, startTime, endTime, useLen, consume, FeeType.CALL);
         operationDAO.save(operation);

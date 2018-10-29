@@ -11,6 +11,7 @@ import util.OrderStatus;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +33,7 @@ public class OrderDAOImpl implements OrderDAO {
             order.setPhoneNo(resultSet.getString("phoneNo"));
             order.setStatus(OrderStatus.valueOf(resultSet.getString("status")));
             order.setPid(resultSet.getLong("pid"));
-            order.setTime(((Timestamp)resultSet.getObject("time")).toLocalDateTime());
+            order.setTime(((Timestamp) resultSet.getObject("time")).toLocalDateTime());
             return order;
         }
     }
@@ -54,7 +55,7 @@ public class OrderDAOImpl implements OrderDAO {
     @Override
     public boolean exists(String phoneNo, long pid) {
         Order order = findByPNAndPid(phoneNo, pid);
-        if(order == null)
+        if (order == null)
             return false;
         else return order.getStatus() == OrderStatus.CANCEL ? false : true;
     }
@@ -74,13 +75,14 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public List<Order> findByPNAndStatusIn(String phoneNo, List<OrderStatus> statuses) {
-        String sql = "SELECT * FROM `Order` WHERE phoneNo=:phoneNo AND status IN (:statuses) ORDER BY time DESC ";
+    public List<Order> findByPNAndStatusInAndTimeBefore(String phoneNo, List<OrderStatus> statuses, LocalDateTime time) {
+        String sql = "SELECT * FROM `Order` WHERE phoneNo=:phoneNo AND status IN (:statuses) AND time <= :time ORDER BY time DESC ";
         List<String> statusStr = new ArrayList<>();
         statuses.forEach(orderStatus -> statusStr.add(orderStatus.toString()));
         Map<String, Object> params = new HashMap<>();
         params.put("phoneNo", phoneNo);
         params.put("statuses", statusStr);
+        params.put("time", time);
         List<Order> orders = parameterJdbcTemplate.query(sql, params, new OrderRowMapper());
         return orders;
     }

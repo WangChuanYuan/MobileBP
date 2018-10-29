@@ -19,7 +19,7 @@ public class PackDetail {
 
     private OrderStatus status;
 
-    public void describe(){
+    public void describe() {
         System.out.println("订购时间：" + time);
         System.out.println("当前套餐状态：" + status);
         pack.describe();

@@ -3,6 +3,7 @@ package dao.order;
 import po.Order;
 import util.OrderStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderDAO {
@@ -17,5 +18,5 @@ public interface OrderDAO {
 
     List<Order> findByPN(String phoneNo);
 
-    List<Order> findByPNAndStatusIn(String phoneNo, List<OrderStatus> statuses);
+    List<Order> findByPNAndStatusInAndTimeBefore(String phoneNo, List<OrderStatus> statuses, LocalDateTime time);
 }

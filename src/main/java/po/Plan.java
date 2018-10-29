@@ -14,10 +14,10 @@ public class Plan {
 
     private FeeType type;
 
-    public void describe(){
+    public void describe() {
         System.out.println("优惠类型：" + type.toString());
         System.out.print("免费长度:" + freeLen);
-        switch (type){
+        switch (type) {
             case CALL:
                 System.out.println("分钟");
                 break;

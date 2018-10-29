@@ -17,4 +17,8 @@ public interface OperationDAO {
     List<Operation> findByPNAndTimeBetween(String phoneNo, LocalDateTime startTime, LocalDateTime endTime);
 
     List<Operation> findByPNAndTimeBetweenAndType(String phoneNo, LocalDateTime startTime, LocalDateTime endTime, FeeType type);
+
+    double findSumOfUseLenByPNAndTimeBetweenAndType(String phoneNo, LocalDateTime startTime, LocalDateTime endTime, FeeType type);
+
+    double findSumOfFeeByPNAndTimeBetweenAndType(String phoneNo, LocalDateTime startTime, LocalDateTime endTime, FeeType type);
 }

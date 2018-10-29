@@ -35,7 +35,7 @@ public class Operation {
         this.type = type;
     }
 
-    public void describe(){
+    public void describe() {
         System.out.print(startTime + "至" + endTime + "：");
         switch (type) {
             case CALL:

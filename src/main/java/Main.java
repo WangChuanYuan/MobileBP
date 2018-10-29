@@ -171,7 +171,7 @@ public class Main {
         System.out.println("退订套餐且下月生效");
         System.out.println("手机号：" + phoneNo);
         System.out.println("套餐ID：" + pid);
-        ResultMsg resultMsg = orderService.cancelPack(phoneNo, pid, OrderStatus.CANCEL);
+        ResultMsg resultMsg = orderService.cancelPack(phoneNo, pid, OrderStatus.PRECANCEL);
         if (resultMsg == ResultMsg.SUCCESS) {
             System.out.println("退订成功，下月生效");
         } else System.out.println("退订失败");
@@ -190,7 +190,7 @@ public class Main {
         String phoneNo = "123456789";
         System.out.println("查询已购套餐");
         System.out.println("手机号：" + phoneNo);
-        List<PackDetail> packs = orderService.getOrderedPacks(phoneNo);
+        List<PackDetail> packs = orderService.getOrderedPacksBefore(phoneNo, LocalDateTime.now());
         for (PackDetail pack : packs)
             pack.describe();
         System.out.println("---------------");

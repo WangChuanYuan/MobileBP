@@ -29,7 +29,7 @@ public class Bill {
 
     private int month;
 
-    public void describe(){
+    public void describe() {
         System.out.println("月功能费：" + packFee + "元");
         System.out.println("通话：" + lenOfCall + "分钟");
         System.out.println("短信：" + lenOfMsg + "条");

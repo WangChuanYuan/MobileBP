@@ -24,9 +24,9 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public double useData(String phoneNo, LocalDateTime startTime, LocalDateTime endTime, double useLen, FeeType type) {
-        if(!clientDAO.exists(phoneNo))
+        if (!clientDAO.exists(phoneNo))
             return -1;
-        double consume = feeCalculator.calculateFee(phoneNo, useLen, startTime, type);
+        double consume = feeCalculator.calculateFee(phoneNo, useLen, endTime, type);
         //记录本次流量使用
         Operation operation = new Operation(phoneNo, startTime, endTime, useLen, consume, type);
         operationDAO.save(operation);

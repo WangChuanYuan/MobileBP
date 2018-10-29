@@ -25,11 +25,11 @@ public class Pack {
         this.plans = plans;
     }
 
-    public void describe(){
+    public void describe() {
         System.out.println("名称：" + name);
         System.out.println("月功能费：" + fee);
         System.out.println("包含优惠：");
-        for(int i = 0; i < plans.size(); i++){
+        for (int i = 0; i < plans.size(); i++) {
             System.out.println(i + "：");
             plans.get(i).describe();
         }

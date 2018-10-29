@@ -38,10 +38,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ResultMsg orderPack(String phoneNo, long pid) {
-        if(!clientDAO.exists(phoneNo))
+        if (!clientDAO.exists(phoneNo))
             return ResultMsg.FAILURE;
         //已享受该套餐，不可订购
-        if(orderDAO.exists(phoneNo, pid))
+        if (orderDAO.exists(phoneNo, pid))
             return ResultMsg.FAILURE;
         Client client = clientDAO.findByPN(phoneNo);
         Pack pack = packDAO.findByPid(pid);
@@ -56,33 +56,33 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ResultMsg cancelPack(String phoneNo, long pid, OrderStatus status) {
-        if(!clientDAO.exists(phoneNo))
+        if (!clientDAO.exists(phoneNo))
             return ResultMsg.FAILURE;
         //更改订单状态
         Order order = orderDAO.findByPNAndPid(phoneNo, pid);
-        if(order == null)
+        if (order == null)
             return ResultMsg.FAILURE;
         order.setStatus(status);
         int row = orderDAO.update(order);
         if (row > 0) {
             //如果是立即退款,则重新计算本月消费并额外扣费
-            if (status == OrderStatus.CANCEL){
+            if (status == OrderStatus.CANCEL) {
                 LocalDateTime today = LocalDateTime.now();
                 LocalDateTime monthStart = LocalDateTime.of(today.getYear(), today.getMonthValue(), 1, 0, 0);
                 LocalDateTime monthEnd = LocalDateTime.of(today.getYear(), today.getMonthValue(), today.toLocalDate().lengthOfMonth(), 23, 59);
                 List<Operation> operations = operationDAO.findByPNAndTimeBetween(phoneNo, monthStart, monthEnd);
                 //统计新的套餐优惠长度
-                List<PackDetail> packs = getOrderedPacks(phoneNo); //此时已经取消了一个套餐
+                List<PackDetail> packs = getOrderedPacksBefore(phoneNo, LocalDateTime.now()); //此时已经取消了一个套餐
                 double callFree = 0;
                 double msgFree = 0;
                 double localDataFree = 0;
                 double genDataFree = 0;
-                for(int i = 0; i < packs.size(); i++){
+                for (int i = 0; i < packs.size(); i++) {
                     List<Plan> plans = packs.get(i).getPack().getPlans();
-                    for (int j = 0; j < plans.size(); j++){
+                    for (int j = 0; j < plans.size(); j++) {
                         Plan plan = plans.get(j);
                         double freeLen = plan.getFreeLen();
-                        switch (plan.getType()){
+                        switch (plan.getType()) {
                             case CALL:
                                 callFree = callFree + freeLen;
                                 break;
@@ -106,31 +106,29 @@ public class OrderServiceImpl implements OrderService {
                         collect(Collectors.groupingBy(Operation::getType, Collectors.summarizingDouble(Operation::getUseLen)));
                 //取消套餐后额外计费
                 double cost = 0;
-                if(useLen.get(FeeType.CALL) != null && useLen.get(FeeType.CALL).getSum() > callFree)
+                if (useLen.get(FeeType.CALL) != null && useLen.get(FeeType.CALL).getSum() > callFree)
                     cost += (useLen.get(FeeType.CALL).getSum() - callFree) * FEE[FeeType.CALL.ordinal()] - consumption.get(FeeType.CALL).getSum();
-                if(useLen.get(FeeType.MESSAGE) != null && useLen.get(FeeType.MESSAGE).getSum() > msgFree)
+                if (useLen.get(FeeType.MESSAGE) != null && useLen.get(FeeType.MESSAGE).getSum() > msgFree)
                     cost += (useLen.get(FeeType.MESSAGE).getSum() - msgFree) * FEE[FeeType.MESSAGE.ordinal()] - consumption.get(FeeType.MESSAGE).getSum();
-                if(useLen.get(FeeType.LOCAL_DATA) != null && useLen.get(FeeType.LOCAL_DATA).getSum() > localDataFree)
+                if (useLen.get(FeeType.LOCAL_DATA) != null && useLen.get(FeeType.LOCAL_DATA).getSum() > localDataFree)
                     cost += (useLen.get(FeeType.LOCAL_DATA).getSum() - localDataFree) * FEE[FeeType.LOCAL_DATA.ordinal()] - consumption.get(FeeType.LOCAL_DATA).getSum();
-                if(useLen.get(FeeType.GEN_DATA) != null && useLen.get(FeeType.GEN_DATA).getSum() > genDataFree)
+                if (useLen.get(FeeType.GEN_DATA) != null && useLen.get(FeeType.GEN_DATA).getSum() > genDataFree)
                     cost += (useLen.get(FeeType.GEN_DATA).getSum() - genDataFree) * FEE[FeeType.GEN_DATA.ordinal()] - consumption.get(FeeType.GEN_DATA).getSum();
                 cost -= packDAO.findByPid(pid).getFee(); // 退还套餐费
                 Client client = clientDAO.findByPN(phoneNo);
                 double remain = client.getRemain() - cost;
                 client.setRemain(remain);
                 return clientDAO.update(client) > 0 ? ResultMsg.SUCCESS : ResultMsg.FAILURE;
-            }
-            else return ResultMsg.SUCCESS;
-        }
-        else return ResultMsg.FAILURE;
+            } else return ResultMsg.SUCCESS;
+        } else return ResultMsg.FAILURE;
     }
 
     @Override
-    public List<PackDetail> getOrderedPacks(String phoneNo) {
+    public List<PackDetail> getOrderedPacksBefore(String phoneNo, LocalDateTime time) {
         List<OrderStatus> statuses = new ArrayList<>();
         statuses.add(OrderStatus.ORDER);
         statuses.add(OrderStatus.PRECANCEL);
-        List<Order> orders = orderDAO.findByPNAndStatusIn(phoneNo, statuses);
+        List<Order> orders = orderDAO.findByPNAndStatusInAndTimeBefore(phoneNo, statuses, time);
         List<PackDetail> packs = new ArrayList<>();
         orders.forEach(order -> packs.add(new PackDetail(packDAO.findByPid(order.getPid()), order.getTime(), order.getStatus())));
         return packs;

@@ -26,8 +26,8 @@ public class OperationDAOImpl implements OperationDAO {
             Operation operation = new Operation();
             operation.setOid(resultSet.getLong("oid"));
             operation.setPhoneNo(resultSet.getString("phoneNo"));
-            operation.setStartTime(((Timestamp)resultSet.getObject("startTime")).toLocalDateTime());
-            operation.setEndTime(((Timestamp)resultSet.getObject("endTime")).toLocalDateTime());
+            operation.setStartTime(((Timestamp) resultSet.getObject("startTime")).toLocalDateTime());
+            operation.setEndTime(((Timestamp) resultSet.getObject("endTime")).toLocalDateTime());
             operation.setUseLen(resultSet.getDouble("useLen"));
             operation.setFee(resultSet.getDouble("fee"));
             operation.setType(FeeType.valueOf(resultSet.getString("type")));
@@ -68,5 +68,19 @@ public class OperationDAOImpl implements OperationDAO {
         String sql = "SELECT * FROM Operation WHERE phoneNo=? AND startTime >= ? AND endTime <= ? AND type=?";
         List<Operation> operations = jdbcTemplate.query(sql, new Object[]{phoneNo, startTime, endTime, type.toString()}, new OperationRowMapper());
         return operations;
+    }
+
+    @Override
+    public double findSumOfUseLenByPNAndTimeBetweenAndType(String phoneNo, LocalDateTime startTime, LocalDateTime endTime, FeeType type) {
+        String sql = "SELECT sum(useLen) FROM Operation WHERE phoneNo=? AND startTime >= ? AND endTime <= ? AND type=?";
+        double sum = jdbcTemplate.queryForObject(sql, new Object[]{phoneNo, startTime, endTime, type.toString()}, Double.class);
+        return sum;
+    }
+
+    @Override
+    public double findSumOfFeeByPNAndTimeBetweenAndType(String phoneNo, LocalDateTime startTime, LocalDateTime endTime, FeeType type) {
+        String sql = "SELECT sum(fee) FROM Operation WHERE phoneNo=? AND startTime >= ? AND endTime <= ? AND type=?";
+        double sum = jdbcTemplate.queryForObject(sql, new Object[]{phoneNo, startTime, endTime, type.toString()}, Double.class);
+        return sum;
     }
 }
