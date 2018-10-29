@@ -1,6 +1,7 @@
 package dao.operation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -73,14 +74,24 @@ public class OperationDAOImpl implements OperationDAO {
     @Override
     public double findSumOfUseLenByPNAndTimeBetweenAndType(String phoneNo, LocalDateTime startTime, LocalDateTime endTime, FeeType type) {
         String sql = "SELECT sum(useLen) FROM Operation WHERE phoneNo=? AND startTime >= ? AND endTime <= ? AND type=?";
-        double sum = jdbcTemplate.queryForObject(sql, new Object[]{phoneNo, startTime, endTime, type.toString()}, Double.class);
+        double sum;
+        try {
+            sum = jdbcTemplate.queryForObject(sql, new Object[]{phoneNo, startTime, endTime, type.toString()}, Double.class);
+        } catch (EmptyResultDataAccessException e) {
+            sum = 0;
+        }
         return sum;
     }
 
     @Override
     public double findSumOfFeeByPNAndTimeBetweenAndType(String phoneNo, LocalDateTime startTime, LocalDateTime endTime, FeeType type) {
         String sql = "SELECT sum(fee) FROM Operation WHERE phoneNo=? AND startTime >= ? AND endTime <= ? AND type=?";
-        double sum = jdbcTemplate.queryForObject(sql, new Object[]{phoneNo, startTime, endTime, type.toString()}, Double.class);
+        double sum;
+        try {
+            sum = jdbcTemplate.queryForObject(sql, new Object[]{phoneNo, startTime, endTime, type.toString()}, Double.class);
+        } catch (EmptyResultDataAccessException e) {
+            sum = 0;
+        }
         return sum;
     }
 }
