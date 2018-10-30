@@ -17,7 +17,6 @@ import util.ResultMsg;
 import vo.Bill;
 import vo.PackDetail;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,19 +35,16 @@ public class Main {
     /**
      * 可以进行的操作
      * 具体说明见方法注释或说明文档
-     * 所列均为模拟操作:
-     * 用户名和余额在方法内指定了
-     * 通话短信流量的结束时间和用量在方法内指定了
-     * 想更改测试请更改参数或方法内代码。。。
+     * 所列均为模拟操作
      */
     public static void main(String[] args) {
         initialize();
-//        addClient("123456789");
+//        addClient("123456789", "wcy", 10000);
 //        addPack();
-//        call("123456789");
+//        call("123456789", 5);
 //        sendMessage("123456789");
-//        useLocalData("123456789");
-//        useGenData("123456789");
+//        useLocalData("123456789", 20);
+//        useGenData("123456789", 130);
 //        genBill("123456789", 2018, 10);
 //        genDetails("123456789", 2018, 10);
 //        getOrderedPacks("123456789");
@@ -74,11 +70,15 @@ public class Main {
      * 手机号123456789
      * @param phoneNo
      * 手机号
+     * @param name
+     * 用户名
+     * @param remain
+     * 余额
      */
-    private static void addClient(String phoneNo) {
+    private static void addClient(String phoneNo, String name, double remain) {
         long start = System.currentTimeMillis();
         System.out.println("添加新的客户");
-        Client client = new Client(phoneNo, "wcy", 10000);
+        Client client = new Client(phoneNo, name, remain);
         ResultMsg resultMsg = clientService.addClient(client);
         if (resultMsg == ResultMsg.SUCCESS) {
             System.out.println("添加成功");
@@ -237,17 +237,19 @@ public class Main {
 
     /**
      * 123456789通话，记录下此次通话费用，如果在免费额度内，则费用为0
+     * 模拟通话时间为5分钟
      * @param phoneNo
      * 手机号
+     * @param useLen
+     * 通话时间
      */
-    private static void call(String phoneNo) {
+    private static void call(String phoneNo, double useLen) {
         long start = System.currentTimeMillis();
         LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = startTime.plusMinutes(5);
+        LocalDateTime endTime = startTime.plusMinutes((long)useLen);
         System.out.println("通话");
         System.out.println("手机号：" + phoneNo);
         double fee = callService.call(phoneNo, startTime, endTime);
-        double useLen = Duration.between(startTime, endTime).toMinutes();
         System.out.println("通话时间：" + useLen + "minutes");
         System.out.println("通话费用：" + fee + "元");
         System.out.println("---------------");
@@ -278,14 +280,16 @@ public class Main {
 
     /**
      * 123456789使用本地流量，记录下此次流量费用，如果在免费额度内，则费用为0
+     * 模拟使用流量20M
      * @param phoneNo
      * 手机号
+     * @param useLen
+     * 流量
      */
-    private static void useLocalData(String phoneNo) {
+    private static void useLocalData(String phoneNo, double useLen) {
         long start = System.currentTimeMillis();
         LocalDateTime startTime = LocalDateTime.now();
         LocalDateTime endTime = startTime.plusMinutes(5);
-        double useLen = 20;
         System.out.println("使用本地流量");
         System.out.println("手机号：" + phoneNo);
         double fee = dataService.useData(phoneNo, startTime, endTime, useLen, FeeType.LOCAL_DATA);
@@ -300,14 +304,16 @@ public class Main {
 
     /**
      * 123456789使用全国流量，记录下此次流量费用，如果在免费额度内，则费用为0
+     * 模拟使用流量130M
      * @param phoneNo
      * 手机号
+     * @param useLen
+     * 流量
      */
-    private static void useGenData(String phoneNo) {
+    private static void useGenData(String phoneNo, double useLen) {
         long start = System.currentTimeMillis();
         LocalDateTime startTime = LocalDateTime.now();
         LocalDateTime endTime = startTime.plusMinutes(5);
-        double useLen = 130;
         System.out.println("使用全国流量");
         System.out.println("手机号：" + phoneNo);
         double fee = dataService.useData(phoneNo, startTime, endTime, useLen, FeeType.GEN_DATA);
