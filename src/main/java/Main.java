@@ -39,19 +39,19 @@ public class Main {
      */
     public static void main(String[] args) {
         initialize();
-//        addClient("123456789", "wcy", 10000);
-//        addPack();
-//        call("123456789", 5);
-//        sendMessage("123456789");
-//        useLocalData("123456789", 20);
-//        useGenData("123456789", 130);
-//        genBill("123456789", 2018, 10);
-//        genDetails("123456789", 2018, 10);
-//        getOrderedPacks("123456789");
-//        order("123456789", 1);
-//        cancelOrder("123456789", 2);
-//        preCancelOrder("123456789", 1);
-//        getPackHistory("123456789");
+        addClient("123456789", "wcy", 10000);
+        addPack();
+        call("123456789", 5);
+        sendMessage("123456789");
+        useLocalData("123456789", 20);
+        useGenData("123456789", 130);
+        genBill("123456789", 2018, 10);
+        genDetails("123456789", 2018, 10);
+        getOrderedPacks("123456789");
+        order("123456789", 1);
+        cancelOrder("123456789", 2);
+        preCancelOrder("123456789", 1);
+        getPackHistory("123456789");
     }
 
     private static void initialize() {
@@ -117,7 +117,7 @@ public class Main {
     }
 
     /**
-     * 为123456789订购1号套餐，注意同一套餐相同用户只能同时订购一个
+     * 为123456789订购1号套餐并扣费，注意同一套餐相同用户只能同时订购一个
      * 重复订购与套餐不存在均会订购失败
      * @param phoneNo
      * 手机号
@@ -250,8 +250,12 @@ public class Main {
         System.out.println("通话");
         System.out.println("手机号：" + phoneNo);
         double fee = callService.call(phoneNo, startTime, endTime);
-        System.out.println("通话时间：" + useLen + "minutes");
-        System.out.println("通话费用：" + fee + "元");
+        if(fee < 0)
+            System.out.println("无法通话");
+        else {
+            System.out.println("通话时间：" + useLen + "minutes");
+            System.out.println("通话费用：" + fee + "元");
+        }
         System.out.println("---------------");
         long end = System.currentTimeMillis();
         System.out.println((end - start) / 1000.0 + "seconds");
@@ -270,7 +274,10 @@ public class Main {
         System.out.println("发送短信");
         System.out.println("手机号：" + phoneNo);
         double fee = msgService.sendMsg(phoneNo, startTime);
-        System.out.println("短信费用：" + fee + "元");
+        if(fee < 0)
+            System.out.println("无法发送");
+        else
+            System.out.println("短信费用：" + fee + "元");
         System.out.println("---------------");
         long end = System.currentTimeMillis();
         System.out.println((end - start) / 1000.0 + "seconds");
@@ -293,8 +300,12 @@ public class Main {
         System.out.println("使用本地流量");
         System.out.println("手机号：" + phoneNo);
         double fee = dataService.useData(phoneNo, startTime, endTime, useLen, FeeType.LOCAL_DATA);
-        System.out.println("使用本地流量：" + useLen + "M");
-        System.out.println("本地流量费用：" + fee + "元");
+        if(fee < 0)
+            System.out.println("无法使用");
+        else {
+            System.out.println("使用本地流量：" + useLen + "M");
+            System.out.println("本地流量费用：" + fee + "元");
+        }
         System.out.println("---------------");
         long end = System.currentTimeMillis();
         System.out.println((end - start) / 1000.0 + "seconds");
@@ -317,8 +328,12 @@ public class Main {
         System.out.println("使用全国流量");
         System.out.println("手机号：" + phoneNo);
         double fee = dataService.useData(phoneNo, startTime, endTime, useLen, FeeType.GEN_DATA);
-        System.out.println("使用全国流量：" + useLen + "M");
-        System.out.println("全国流量费用：" + fee + "元");
+        if(fee < 0)
+            System.out.println("无法使用");
+        else {
+            System.out.println("使用全国流量：" + useLen + "M");
+            System.out.println("全国流量费用：" + fee + "元");
+        }
         System.out.println("---------------");
         long end = System.currentTimeMillis();
         System.out.println((end - start) / 1000.0 + "seconds");

@@ -1,12 +1,5 @@
 package vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Bill {
 
     private double packFee;
@@ -28,6 +21,102 @@ public class Bill {
     private double feeOfGenData;
 
     private int month;
+
+    public Bill() {
+    }
+
+    public Bill(double packFee, double lenOfCall, double lenOfMsg, double lenOfLocalData, double lenOfGenData, double feeOfCall, double feeOfMsg, double feeOfLocalData, double feeOfGenData, int month) {
+        this.packFee = packFee;
+        this.lenOfCall = lenOfCall;
+        this.lenOfMsg = lenOfMsg;
+        this.lenOfLocalData = lenOfLocalData;
+        this.lenOfGenData = lenOfGenData;
+        this.feeOfCall = feeOfCall;
+        this.feeOfMsg = feeOfMsg;
+        this.feeOfLocalData = feeOfLocalData;
+        this.feeOfGenData = feeOfGenData;
+        this.month = month;
+    }
+
+    public double getPackFee() {
+        return packFee;
+    }
+
+    public void setPackFee(double packFee) {
+        this.packFee = packFee;
+    }
+
+    public double getLenOfCall() {
+        return lenOfCall;
+    }
+
+    public void setLenOfCall(double lenOfCall) {
+        this.lenOfCall = lenOfCall;
+    }
+
+    public double getLenOfMsg() {
+        return lenOfMsg;
+    }
+
+    public void setLenOfMsg(double lenOfMsg) {
+        this.lenOfMsg = lenOfMsg;
+    }
+
+    public double getLenOfLocalData() {
+        return lenOfLocalData;
+    }
+
+    public void setLenOfLocalData(double lenOfLocalData) {
+        this.lenOfLocalData = lenOfLocalData;
+    }
+
+    public double getLenOfGenData() {
+        return lenOfGenData;
+    }
+
+    public void setLenOfGenData(double lenOfGenData) {
+        this.lenOfGenData = lenOfGenData;
+    }
+
+    public double getFeeOfCall() {
+        return feeOfCall;
+    }
+
+    public void setFeeOfCall(double feeOfCall) {
+        this.feeOfCall = feeOfCall;
+    }
+
+    public double getFeeOfMsg() {
+        return feeOfMsg;
+    }
+
+    public void setFeeOfMsg(double feeOfMsg) {
+        this.feeOfMsg = feeOfMsg;
+    }
+
+    public double getFeeOfLocalData() {
+        return feeOfLocalData;
+    }
+
+    public void setFeeOfLocalData(double feeOfLocalData) {
+        this.feeOfLocalData = feeOfLocalData;
+    }
+
+    public double getFeeOfGenData() {
+        return feeOfGenData;
+    }
+
+    public void setFeeOfGenData(double feeOfGenData) {
+        this.feeOfGenData = feeOfGenData;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
 
     public void describe() {
         System.out.println("月功能费：" + packFee + "元");

@@ -1,18 +1,37 @@
 package po;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import util.FeeType;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class Plan {
 
     private double freeLen;
 
     private FeeType type;
+
+    public Plan() {
+    }
+
+    public Plan(double freeLen, FeeType type) {
+        this.freeLen = freeLen;
+        this.type = type;
+    }
+
+    public double getFreeLen() {
+        return freeLen;
+    }
+
+    public void setFreeLen(double freeLen) {
+        this.freeLen = freeLen;
+    }
+
+    public FeeType getType() {
+        return type;
+    }
+
+    public void setType(FeeType type) {
+        this.type = type;
+    }
 
     public void describe() {
         System.out.println("优惠类型：" + type.toString());

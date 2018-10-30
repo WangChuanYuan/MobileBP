@@ -1,14 +1,8 @@
 package po;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class Pack {
 
     private long pid;
@@ -19,9 +13,51 @@ public class Pack {
 
     private List<Plan> plans;
 
+    public Pack() {
+    }
+
+    public Pack(long pid, String name, double fee, List<Plan> plans) {
+        this.pid = pid;
+        this.name = name;
+        this.fee = fee;
+        this.plans = plans;
+    }
+
     public Pack(String name, double fee, List<Plan> plans) {
         this.name = name;
         this.fee = fee;
+        this.plans = plans;
+    }
+
+    public long getPid() {
+        return pid;
+    }
+
+    public void setPid(long pid) {
+        this.pid = pid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getFee() {
+        return fee;
+    }
+
+    public void setFee(double fee) {
+        this.fee = fee;
+    }
+
+    public List<Plan> getPlans() {
+        return plans;
+    }
+
+    public void setPlans(List<Plan> plans) {
         this.plans = plans;
     }
 

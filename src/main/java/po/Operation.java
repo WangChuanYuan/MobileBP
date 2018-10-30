@@ -1,15 +1,9 @@
 package po;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import util.FeeType;
 
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Operation {
 
     private long oid;
@@ -25,6 +19,75 @@ public class Operation {
     private double fee;
 
     private FeeType type;
+
+    public Operation() {
+    }
+
+    public Operation(long oid, String phoneNo, LocalDateTime startTime, LocalDateTime endTime, double useLen, double fee, FeeType type) {
+        this.oid = oid;
+        this.phoneNo = phoneNo;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.useLen = useLen;
+        this.fee = fee;
+        this.type = type;
+    }
+
+    public long getOid() {
+        return oid;
+    }
+
+    public void setOid(long oid) {
+        this.oid = oid;
+    }
+
+    public String getPhoneNo() {
+        return phoneNo;
+    }
+
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public double getUseLen() {
+        return useLen;
+    }
+
+    public void setUseLen(double useLen) {
+        this.useLen = useLen;
+    }
+
+    public double getFee() {
+        return fee;
+    }
+
+    public void setFee(double fee) {
+        this.fee = fee;
+    }
+
+    public FeeType getType() {
+        return type;
+    }
+
+    public void setType(FeeType type) {
+        this.type = type;
+    }
 
     public Operation(String phoneNo, LocalDateTime startTime, LocalDateTime endTime, double useLen, double fee, FeeType type) {
         this.phoneNo = phoneNo;
