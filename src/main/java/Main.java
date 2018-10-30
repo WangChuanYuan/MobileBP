@@ -36,22 +36,23 @@ public class Main {
      * 可以进行的操作
      * 具体说明见方法注释或说明文档
      * 所列均为模拟操作
+     * 需要测试的方法取消注释
      */
     public static void main(String[] args) {
         initialize();
-        addClient("123456789", "wcy", 10000);
-        addPack();
-        call("123456789", 5);
-        sendMessage("123456789");
-        useLocalData("123456789", 20);
-        useGenData("123456789", 130);
-        genBill("123456789", 2018, 10);
-        genDetails("123456789", 2018, 10);
-        getOrderedPacks("123456789");
-        order("123456789", 1);
-        cancelOrder("123456789", 2);
-        preCancelOrder("123456789", 1);
-        getPackHistory("123456789");
+//        addClient("123456789", "wcy", 10000);
+//        addPack();
+//        call("123456789", 5);
+//        sendMessage("123456789");
+//        useLocalData("123456789", 20);
+//        useGenData("123456789", 130);
+//        genBill("123456789", 2018, 10);
+//        genDetails("123456789", 2018, 10);
+//        getOrderedPacks("123456789");
+//        order("123456789", 1);
+//        cancelOrder("123456789", 2);
+//        preCancelOrder("123456789", 1);
+//        getPackHistory("123456789");
     }
 
     private static void initialize() {
